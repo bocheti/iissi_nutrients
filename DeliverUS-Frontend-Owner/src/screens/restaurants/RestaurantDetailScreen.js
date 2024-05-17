@@ -59,12 +59,19 @@ export default function RestaurantDetailScreen ({ navigation, route }) {
       <ImageCard
         imageUri={item.image ? { uri: process.env.API_BASE_URL + '/' + item.image } : defaultProductImage}
         title={item.name}
+        cardStyle={{ height: 180 }}
+        imageContainerStyle={{ height: 180, width: 180 }}
       >
         <TextRegular numberOfLines={2}>{item.description}</TextRegular>
         <TextSemiBold textStyle={styles.price}>{item.price.toFixed(2)}€</TextSemiBold>
         {!item.availability &&
           <TextRegular textStyle={styles.availability }>Not available</TextRegular>
         }
+        <TextSemiBold>Nutritional information:</TextSemiBold>
+        <TextSemiBold>   Carbohydrates: <TextRegular>{item.carbohydrates}</TextRegular></TextSemiBold>
+        <TextSemiBold>   Proteins: <TextRegular>{item.proteins}</TextRegular></TextSemiBold>
+        <TextSemiBold>   Fats: <TextRegular>{item.fats}</TextRegular></TextSemiBold>
+        <TextSemiBold>   Calories: <TextRegular>{9 * item.fats + 4 * item.proteins + 4 * item.carbohydrates}</TextRegular></TextSemiBold>
          <View style={styles.actionButtonsContainer}>
           <Pressable
             onPress={() => navigation.navigate('EditProductScreen', { id: item.id })
@@ -242,7 +249,6 @@ const styles = StyleSheet.create({
   actionButtonsContainer: {
     flexDirection: 'row',
     bottom: 5,
-    position: 'absolute',
     width: '90%'
   }
 })

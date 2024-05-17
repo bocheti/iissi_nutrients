@@ -18,7 +18,7 @@ export default function CreateProductScreen ({ navigation, route }) {
   const [productCategories, setProductCategories] = useState([])
   const [backendErrors, setBackendErrors] = useState()
 
-  const initialProductValues = { name: null, description: null, price: null, order: null, restaurantId: route.params.id, productCategoryId: null, availability: true }
+  const initialProductValues = { name: null, description: null, price: null, order: null, restaurantId: route.params.id, productCategoryId: null, carbohydrates: null, proteins: null, fats: null, availability: true }
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -39,7 +39,22 @@ export default function CreateProductScreen ({ navigation, route }) {
       .number()
       .positive()
       .integer()
-      .required('Product category is required')
+      .required('Product category is required'),
+    carbohydrates: yup
+      .number()
+      .nullable()
+      .positive('Please provide a positive carbohydrates value')
+      .integer('Please provide an integer carbohydrates value'),
+    proteins: yup
+      .number()
+      .nullable()
+      .positive('Please provide a positive proteins value')
+      .integer('Please provide an integer proteins value'),
+    fats: yup
+      .number()
+      .nullable()
+      .positive('Please provide a positive fats value')
+      .integer('Please provide an integer fats value')
   })
 
   useEffect(() => {
@@ -90,7 +105,12 @@ export default function CreateProductScreen ({ navigation, route }) {
       })
       navigation.navigate('RestaurantDetailScreen', { id: route.params.id, dirty: true })
     } catch (error) {
-      console.log(error)
+      showMessage({
+        message: `Product ${values.name} could not be created. Check the content and try again`,
+        type: 'error',
+        style: GlobalStyles.flashStyle,
+        titleStyle: GlobalStyles.flashTextStyle
+      })
       setBackendErrors(error.errors)
     }
   }
@@ -118,6 +138,18 @@ export default function CreateProductScreen ({ navigation, route }) {
               <InputItem
                 name='order'
                 label='Order/position to be rendered:'
+              />
+              <InputItem
+                name='carbohydrates'
+                label='Carbohydrates:'
+              />
+              <InputItem
+                name='proteins'
+                label='Proteins:'
+              />
+              <InputItem
+                name='fats'
+                label='Fats:'
               />
 
               <DropDownPicker

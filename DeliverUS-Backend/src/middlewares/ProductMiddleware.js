@@ -37,4 +37,19 @@ const checkProductHasNotBeenOrdered = async (req, res, next) => {
   }
 }
 
-export { checkProductOwnership, checkProductRestaurantOwnership, checkProductHasNotBeenOrdered }
+const checkCalories = async (req, res, next) => {
+  try {
+    if (req.body.fats && req.body.proteins && req.body.carbohydrates) {
+      const calories = 9 * req.body.fats + 4 * req.body.proteins + 4 * req.body.carbohydrates
+      if (calories <= 1000) {
+        return next()
+      } else {
+        return res.status(422).send('Too many calories')
+      }
+    }
+  } catch (err) {
+    return res.status(500).send(err.message)
+  }
+}
+
+export { checkProductOwnership, checkProductRestaurantOwnership, checkProductHasNotBeenOrdered, checkCalories }

@@ -48,6 +48,15 @@ module.exports = {
           key: 'id'
         }
       },
+      carbohydrates: {
+        type: Sequelize.INTEGER
+      },
+      proteins: {
+        type: Sequelize.INTEGER
+      },
+      fats: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

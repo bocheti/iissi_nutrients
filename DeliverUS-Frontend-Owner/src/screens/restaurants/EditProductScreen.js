@@ -21,7 +21,7 @@ export default function EditProductScreen ({ navigation, route }) {
   const [backendErrors, setBackendErrors] = useState()
   const [product, setProduct] = useState({})
 
-  const [initialProductValues, setInitialProductValues] = useState({ name: null, description: null, price: null, order: null, productCategoryId: null, availability: null, image: null })
+  const [initialProductValues, setInitialProductValues] = useState({ name: null, description: null, price: null, order: null, productCategoryId: null, carbohydrates: null, proteins: null, fats: null, availability: true })
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -42,7 +42,22 @@ export default function EditProductScreen ({ navigation, route }) {
       .number()
       .positive()
       .integer()
-      .required('Product category is required')
+      .required('Product category is required'),
+    carbohydrates: yup
+      .number()
+      .nullable()
+      .positive('Please provide a positive carbohydrates value')
+      .integer('Please provide an integer carbohydrates value'),
+    proteins: yup
+      .number()
+      .nullable()
+      .positive('Please provide a positive proteins value')
+      .integer('Please provide an integer proteins value'),
+    fats: yup
+      .number()
+      .nullable()
+      .positive('Please provide a positive fats value')
+      .integer('Please provide an integer fats value')
   })
 
   useEffect(() => {
@@ -113,7 +128,12 @@ export default function EditProductScreen ({ navigation, route }) {
       })
       navigation.navigate('RestaurantDetailScreen', { id: product.restaurantId })
     } catch (error) {
-      console.log(error)
+      showMessage({
+        message: `Product ${product.name} could not be updated. Check the content and try again`,
+        type: 'error',
+        style: GlobalStyles.flashStyle,
+        titleStyle: GlobalStyles.flashTextStyle
+      })
       setBackendErrors(error.errors)
     }
   }
@@ -142,6 +162,18 @@ export default function EditProductScreen ({ navigation, route }) {
               <InputItem
                 name='order'
                 label='Order/position to be rendered:'
+              />
+              <InputItem
+                name='carbohydrates'
+                label='Carbohydrates:'
+              />
+              <InputItem
+                name='proteins'
+                label='Proteins:'
+              />
+              <InputItem
+                name='fats'
+                label='Fats:'
               />
 
               <DropDownPicker

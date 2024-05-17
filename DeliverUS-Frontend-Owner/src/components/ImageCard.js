@@ -8,9 +8,9 @@ import * as GlobalStyles from '../styles/GlobalStyles'
 export default function ImageCard (props) {
   const renderImageCardBody = (props) => {
     return (
-      <View style={styles.card} >
+      <View style={[styles.card, props.cardStyle]} >
         <View>
-          <Image style={styles.image} source={props.imageUri} />
+          <Image style={[styles.image, props.imageContainerStyle]} source={props.imageUri} />
           {/* Solution for windows server <Image style={styles.image} source={props.imageUri?.uri.replace(/\\/g, '/')} /> */}
         </View>
         <View style={styles.cardBody}>
